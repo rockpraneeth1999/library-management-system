@@ -1,20 +1,32 @@
-package com.example.librarymanagementsystem;
+package com.example.librarymanagementsystem.service;
 
+import com.example.librarymanagementsystem.Enum.CardStatus;
+import com.example.librarymanagementsystem.Enum.Gender;
+import com.example.librarymanagementsystem.model.LibraryCard;
+import com.example.librarymanagementsystem.model.Student;
+import com.example.librarymanagementsystem.repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class StudentService {
     @Autowired
     StudentRepository studentRepository;
 
-    public Student addStudent(Student student) {
+    public String addStudent(Student student) {
+        LibraryCard libraryCard = new LibraryCard();
+        libraryCard.setCardNo(UUID.randomUUID().toString());
+        libraryCard.setCardStatus(CardStatus.ACTIVE);
+        libraryCard.setStudent(student);
+        student.setLibraryCard(libraryCard);
+
         Student savedStudent = studentRepository.save(student);
-        return savedStudent;
+        return "Saved";
     }
 
     public Student getStudent(int regNo) {

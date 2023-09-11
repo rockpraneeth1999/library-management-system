@@ -1,5 +1,6 @@
-package com.example.librarymanagementsystem;
+package com.example.librarymanagementsystem.model;
 
+import com.example.librarymanagementsystem.Enum.Gender;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -13,6 +14,7 @@ import lombok.experimental.FieldDefaults;
 public class Student {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     int regNo;
 
     String name;
@@ -23,4 +25,7 @@ public class Student {
 
     @Enumerated(EnumType.STRING)
     Gender gender;
+
+    @OneToOne(mappedBy = "student", cascade = CascadeType.ALL)
+    LibraryCard libraryCard;
 }
