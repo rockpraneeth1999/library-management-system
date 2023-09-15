@@ -14,6 +14,7 @@ import java.sql.Date;
 @Getter
 @Setter
 @Entity
+@Builder
 public class LibraryCard {
 
     @Id
