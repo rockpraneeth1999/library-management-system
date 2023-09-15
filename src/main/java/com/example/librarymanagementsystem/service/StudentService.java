@@ -9,7 +9,7 @@ public interface StudentService{
 
     public StudentResponse addStudent(StudentRequest studentRequest);
     public StudentResponse getStudent(int regNo);
-    public String deleteStudent(int regNo);
+    public void deleteStudent(int regNo);
     public StudentResponse updateStudentAge(int regNo, int age);
     public List<StudentResponse> getAllStudents();
     public List<StudentResponse> getMaleStudents();

@@ -4,6 +4,7 @@ import com.example.librarymanagementsystem.Enum.Gender;
 import com.example.librarymanagementsystem.dto.requestDTO.StudentRequest;
 import com.example.librarymanagementsystem.dto.responseDTO.LibraryCardResponse;
 import com.example.librarymanagementsystem.dto.responseDTO.StudentResponse;
+import com.example.librarymanagementsystem.exception.StudentNotFoundException;
 import com.example.librarymanagementsystem.model.LibraryCard;
 import com.example.librarymanagementsystem.model.Student;
 import com.example.librarymanagementsystem.repository.StudentRepository;
@@ -42,8 +43,9 @@ public class StudentServiceImpl implements StudentService {
 
     public StudentResponse getStudent(int regNo) {
         Optional<Student> studentOptional = studentRepository.findById(regNo);
-        if (!studentOptional.isPresent())
-            return null;
+        if (!studentOptional.isPresent()){
+            throw new StudentNotFoundException("Invalid Student Id , no record exists");
+        }
 
         Student savedStudent = studentOptional.get();
         //Model to DTO
@@ -56,20 +58,20 @@ public class StudentServiceImpl implements StudentService {
         return studentResponse;
     }
 
-    public String deleteStudent(int regNo) {
+    public void deleteStudent(int regNo) {
         Optional<Student> studentRecord = studentRepository.findById(regNo);
-        if(studentRecord.isPresent()){
-            studentRepository.deleteById(regNo);
-            return "Deleted Successfully";
+        if(!studentRecord.isPresent()){
+            throw new StudentNotFoundException("Invalid Student Id for Deletion");
         }
-        return "Does not exists";
+
+        studentRepository.delete(studentRecord.get());
     }
 
     public StudentResponse updateStudentAge(int regNo, int age) {
         //get student record from db
         Optional<Student> studentOptional = studentRepository.findById(regNo);
         if(!studentOptional.isPresent())
-            return null;
+            throw new StudentNotFoundException("Invalid Id for update age");
 
         //update the age from obj
         Student savedStudent = studentOptional.get();
@@ -91,7 +93,7 @@ public class StudentServiceImpl implements StudentService {
     public List<StudentResponse> getAllStudents() {
         List<Student> studentRecords = studentRepository.findAll();
         if (studentRecords.size()==0)
-            return new ArrayList<>();
+            throw new StudentNotFoundException("No records found");
 
         //convert studentRecords to studentResponses DTO
         List<StudentResponse> studentResponses = new ArrayList<>();
@@ -108,7 +110,7 @@ public class StudentServiceImpl implements StudentService {
     public List<StudentResponse> getMaleStudents() {
         List<Student> maleRecords = studentRepository.findByGender(Gender.MALE);
         if (maleRecords.size()==0)
-            return new ArrayList<>();
+            throw new StudentNotFoundException("No male students records found");
 
         //convert studentRecords to studentResponses DTO
         List<StudentResponse> studentResponses = new ArrayList<>();
