@@ -3,7 +3,9 @@ package com.example.librarymanagementsystem.transformer;
 import com.example.librarymanagementsystem.dto.requestDTO.StudentRequest;
 import com.example.librarymanagementsystem.dto.responseDTO.StudentResponse;
 import com.example.librarymanagementsystem.model.Student;
+import lombok.experimental.UtilityClass;
 
+@UtilityClass
 public class StudentTransformer {
 
     public static Student StudentRequestToStudent(StudentRequest studentRequest){

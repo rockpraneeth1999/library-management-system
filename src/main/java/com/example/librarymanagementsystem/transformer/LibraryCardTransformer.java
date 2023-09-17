@@ -4,9 +4,11 @@ import com.example.librarymanagementsystem.Enum.CardStatus;
 import com.example.librarymanagementsystem.dto.responseDTO.LibraryCardResponse;
 import com.example.librarymanagementsystem.model.LibraryCard;
 import com.example.librarymanagementsystem.model.Student;
+import lombok.experimental.UtilityClass;
 
 import java.util.UUID;
 
+@UtilityClass
 public class LibraryCardTransformer {
     public static LibraryCard LibraryCardGenerator(Student student){
 
