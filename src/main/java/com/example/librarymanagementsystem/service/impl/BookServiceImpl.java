@@ -4,7 +4,7 @@ import com.example.librarymanagementsystem.Enum.Genre;
 import com.example.librarymanagementsystem.dto.requestDTO.BookRequest;
 import com.example.librarymanagementsystem.dto.responseDTO.BookResponse;
 import com.example.librarymanagementsystem.exception.AuthorNotFoundException;
-import com.example.librarymanagementsystem.exception.BookNotFoundException;
+import com.example.librarymanagementsystem.exception.BookNotAvailableException;
 import com.example.librarymanagementsystem.model.Author;
 import com.example.librarymanagementsystem.model.Book;
 import com.example.librarymanagementsystem.repository.AuthorRepository;
@@ -50,7 +50,7 @@ public class BookServiceImpl implements BookService {
     public void deleteBook(int id) {
         Optional<Book> optionalBook = bookRepository.findById(id);
         if(!optionalBook.isPresent())
-            throw new BookNotFoundException("Invalid Id for book deletion");
+            throw new BookNotAvailableException("Invalid Id for book deletion");
 
         bookRepository.delete(optionalBook.get());
     }
@@ -59,7 +59,7 @@ public class BookServiceImpl implements BookService {
     public List<BookResponse> getBookByGenre(Genre genre) {
         List<Book> bookList = bookRepository.findByGenre(genre);
         if (bookList.size()==0)
-            throw new BookNotFoundException("No books of this genre "+genre);
+            throw new BookNotAvailableException("No books of this genre "+genre);
 
         List<BookResponse> bookResponses = new ArrayList<>();
         for (Book book:bookList){
@@ -72,7 +72,7 @@ public class BookServiceImpl implements BookService {
     public List<BookResponse> getBookByGenreAndCost(String genre, int cost) {
         List<Book> bookList = bookRepository.getBookByGenreAndCost(genre,cost);
         if (bookList.size()==0)
-            throw new BookNotFoundException("Book not found for genre and cost");
+            throw new BookNotAvailableException("Book not found for genre and cost");
 
         List<BookResponse> bookResponseList = new ArrayList<>();
         for (Book book:bookList){
@@ -91,7 +91,7 @@ public class BookServiceImpl implements BookService {
         List<Book> bookList = bookRepository.getBooksOfAuthor(authorId);
 
         if(bookList.size()==0)
-            throw new BookNotFoundException("No books written by author");
+            throw new BookNotAvailableException("No books written by author");
 
         List<BookResponse> bookResponseList = new ArrayList<>();
         for (Book book:bookList){
